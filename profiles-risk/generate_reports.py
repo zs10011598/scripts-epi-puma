@@ -15,6 +15,7 @@ body = json.loads("""
 	}
 """)
 
+period = 90
 initial_date = dt.datetime.strptime('2020-02-01', '%Y-%m-%d').date()
 delta_period = dt.timedelta(days = 90)
 today = dt.date.today()

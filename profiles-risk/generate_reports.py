@@ -15,33 +15,33 @@ body = json.loads("""
 	}
 """)
 
-initial_date = dt.datetime.strptime(initial_date, '%Y-%m-%d')
+initial_date = dt.datetime.strptime('2020-02-01', '%Y-%m-%d').date()
 delta_period = dt.timedelta(days = 90)
 today = dt.date.today()
 
 while initial_date < today:
 	for target in target_clases:
 		body['target'] = target
-		body['initial_date'] = initial_date
+		body['initial_date'] = initial_date.strftime('%Y-%m-%d')
 		
 		print('<<<====================Start======================>>>')
-		url = 'http://127.0.0.1:8000/api/dge/covariables/'
+		url = 'https://covid19.c3.unam.mx/gateway/api/dge/covariables/'
 		print("URL {0}".format(url))
 		print("Body {0}".format(json.dumps(body)))
-		response = requests.post(url, json=body).json()
-		print("Response {0}".format(json.dumps(response)))
+		response = requests.post(url, json=body)
+		print("Response {0}".format(response))
 		print('<<<=====================End=======================>>>')
 
-		pd.DataFrame(response).to_csv('./reports/dge-covariables-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period))
+		pd.DataFrame(response.json()).to_csv('./reports/dge-covariables-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period))
 
 		print('<<<====================Start======================>>>')
-		url = 'http://127.0.0.1:8000/api/dge/cells/'
+		url = 'https://covid19.c3.unam.mx/gateway/api/dge/cells/'
 		print("URL {0}".format(url))
 		print("Body {0}".format(json.dumps(body)))
 		response = requests.post(url, json=body).json()
-		print("Response {0}".format(json.dumps(response)))
+		print("Response {0}".format(response))
 		print('<<<=====================End=======================>>>')
 
-		pd.DataFrame(response).to_csv('./reports/dge-occurrences-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period))
+		pd.DataFrame(response.json()).to_csv('./reports/dge-occurrences-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period))
 	
 	initial_date += delta_period

@@ -33,18 +33,24 @@ while initial_date < today:
 		print("Response {0}".format(response))
 		print('<<<=====================End=======================>>>')
 
-		df = pd.DataFrame(response.json())
-		df.to_csv('./reports/dge-covariables-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period), index=False)
+		try:
+			df = pd.DataFrame(response.json())
+			df.to_csv('./reports/dge-covariables-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period), index=False)
+		except Exception as e:
+			print(str(e))
 
 		print('<<<====================Start======================>>>')
 		url = 'https://covid19.c3.unam.mx/gateway/api/dge/cells/'
 		print("URL {0}".format(url))
 		print("Body {0}".format(json.dumps(body)))
-		response = requests.post(url, json=body).json()
+		response = requests.post(url, json=body)
 		print("Response {0}".format(response))
 		print('<<<=====================End=======================>>>')
 
-		df = pd.DataFrame(response.json())
-		df.to_csv('./reports/dge-occurrences-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period), index=False)
+		try:
+			df = pd.DataFrame(response.json())
+			df.to_csv('./reports/dge-occurrences-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period), index=False)
+		except Exception as e:
+			print(str(e))
 	
 	initial_date += delta_period

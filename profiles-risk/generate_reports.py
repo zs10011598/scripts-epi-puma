@@ -33,7 +33,8 @@ while initial_date < today:
 		print("Response {0}".format(response))
 		print('<<<=====================End=======================>>>')
 
-		pd.DataFrame(response.json()).to_csv('./reports/dge-covariables-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period))
+		df = pd.DataFrame(response.json())
+		df.to_csv('./reports/dge-covariables-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period), index=False)
 
 		print('<<<====================Start======================>>>')
 		url = 'https://covid19.c3.unam.mx/gateway/api/dge/cells/'
@@ -43,6 +44,7 @@ while initial_date < today:
 		print("Response {0}".format(response))
 		print('<<<=====================End=======================>>>')
 
-		pd.DataFrame(response.json()).to_csv('./reports/dge-occurrences-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period))
+		df = pd.DataFrame(response.json())
+		df.to_csv('./reports/dge-occurrences-{0}-{1}-{2}.csv'.format(target, initial_date.strftime('%Y-%m-%d'), period), index=False)
 	
 	initial_date += delta_period
